@@ -1,0 +1,317 @@
+<form ngNativeValidate (ngSubmit)="Submit()">
+<div class="cardcontainer">
+    <div class="row g-3 text-center mt-2">
+        <p class="headingbs">Buisness Search</p>
+    </div>
+    
+    <div class="row g-3 mt-1">
+        <div class="col">
+          <label for="Keyword">Keyword</label>
+          <input type="text" matInput [matAutocomplete]="auto" required class="form-control" id = "Keyword" name="keyword" [(ngModel)]="keyword" [formControl]="searchCtrl">
+
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected()">
+            <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+              <ng-container *ngIf="!isLoading">
+              <mat-option *ngFor="let movie of filtered" [value]="movie">
+                <span><p>{{movie}}</p></span>
+            </mat-option>
+            </ng-container>
+          </mat-autocomplete>
+        </div>
+
+
+  
+    </div>
+
+    <div class="row g-3 mt-1">
+        <div class="col-md-6">
+          <label for="Distance">Distance</label>
+          <input type="text" class="form-control" placeholder="10" id = "Distance" name="distance" [(ngModel)]="distance">
+        </div>
+        <div class="col-10 col-md-5 ">
+            <label for="Category">Category</label>
+            <select class="form-select" id="Category" name="category" [(ngModel)]="category">
+                <option value="all" selected>Default</option>
+                <option value="arts">Arts & Entertainment</option>
+                <option value="health">Health & Medical</option>
+                <option value="hotelstravel">Hotels & Travel</option>
+                <option value="food">Food</option>
+                <option value="professional">Professional Services</option>
+              </select>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-1">
+        <div class="col">
+          <label for="Keyword">Location</label>
+          <input type="text" class="form-control" id = "Location" required name="location" [(ngModel)]="location" [disabled] = autodec>
+        </div>
+    </div>
+
+    <div class="form-check mt-2">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="autodec" [(ngModel)]="autodec" (click)="lnull()">
+        <label class="form-check-label" for="flexCheckDefault" >
+          Auto-detect my location
+        </label>
+      </div>
+
+    <div class="buttons text-center mb-2">
+        <button type="submit" class="btn btn-danger me-3">Submit</button>
+        <button type="button" class="btn btn-primary" (click)="cleared()">Clear</button>
+    </div>
+</div>
+</form>
+
+
+
+
+
+<div *ngIf="results.length>0 && hidden && h1" class=" mt-5 mb-3" >
+    <table class="table tablecontainer table-light table-striped rounded-3 overflow-hidden">
+    <thead>
+      <tr>
+      <th class="col-md-2 text-center">#</th>
+      <th class="col-md-2 ">Image</th>
+      <th class="col-md-3 text-center">Buisness Name</th>
+      <th class="col-md-3 text-center">Rating</th>
+      <th class="col-md-2 text-center">Distance (miles)</th>
+    </tr>
+    </thead>
+      <tbody>
+      <tr *ngFor="let x of results.slice(0,10);index as i" (click)="getid(x['id'])" style="cursor: pointer;">
+        <td class="col-md-2 text-center"><b>{{i+1}}</b></td>
+        <td class="col-md-2"><img src='{{x["image_url"]}}' width="80" height="80"></td>
+        <td class="col-md-3 text-center">{{x["name"]}}</td>
+        <td class="col-md-3 text-center">{{x["rating"]}}</td>
+        <td class="col-md-2 text-center">{{(x["distance"]/1609.34)|number:'1.0-0'}}</td>
+      </tr>
+    </tbody>
+    </table>
+</div>
+
+<div *ngIf="results.length==0 && searched">
+  <p class="nrf text-center rounded rounded-3 overflow-hidden mt-5">No results available</p>
+</div>
+
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-keyboard="false" data-bs-backdrop="static"  aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="mtrf" id="exampleModalLabel">Reservation form</span>
+        </div>
+        <div class="modal-body">
+          <h2 class="text-center">{{name}}</h2>
+          <form (ngSubmit)="localestorage()" [formGroup]="modalform" novalidate>
+            <div class="mb-3 form-group">
+              <label for="exampleInputEmail1" class="form-label">Email </label>
+
+              <input type="email" class="form-control" id="exampleInputEmail1" 
+              aria-describedby="emailHelp" name="resemail"
+              formControlName="resemail" [(ngModel)]="resemail" 
+              required
+              [ngClass]="{
+                'is-invalid': modalform.controls['resemail'].invalid && modalform.updateOn=='change' }">
+                <div *ngIf="modalform.controls['resemail'].invalid && modalform.updateOn == 'change' && modalform.controls['resemail'].errors && modalform.controls['resemail'].errors['required']" class="invalid-feedback">
+                  Email is required
+                </div>
+                <div *ngIf="modalform.controls['resemail'].invalid && modalform.updateOn == 'change' && modalform.controls['resemail'].errors && modalform.controls['resemail'].errors['email']" class="invalid-feedback">
+                  Email must be a valid address
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+              <div class="md-form">
+                <label for="inputMDEx">Date</label>
+                <input type="date" id="inputMDEx" class="form-control" 
+                name="resdate" 
+                formControlName="resdate"
+                min="{{mindate}}"
+                [(ngModel)]="resdate"
+                required
+                [ngClass]="{'is-invalid': modalform.controls['resdate'].invalid && modalform.updateOn=='change' }">
+                <div *ngIf="modalform.controls['resdate'].invalid && modalform.updateOn == 'change' && modalform.controls['resdate'].errors && modalform.controls['resdate'].errors['required']" class="invalid-feedback">
+                  date is required
+                </div>
+              </div>
+            </div>
+            <label>Time</label>
+            <div style="display: flex;">
+            <div class="mb-3 col-md-3">
+              <select class="form-control " aria-label="Default select example" name="reshour"   [(ngModel)]="reshour"
+              formControlName="reshour" 
+              [ngClass]="{'is-invalid': modalform.controls['reshour'].invalid && modalform.updateOn=='change' }">
+                <option *ngFor="let x of [10,11,12,13,14,15,16,17];" value="{{x}}">{{x}}</option>
+              </select>
+            </div>
+            <p class="mx-2 mt-2 "> : </p>
+            <div class="mb-3 col-md-3">
+              <select class="form-control" aria-label="Default select example" 
+              formControlName="resmin"
+              name="resmin" [(ngModel)]="resmin"
+              [ngClass]="{'is-invalid': modalform.controls['resmin'].invalid && modalform.updateOn=='change' }">
+                <option *ngFor="let x of [00,15,30,45]" value="{{x}}">{{x}}</option>
+              </select>
+            </div>
+            <div class="mx-2 mt-2">
+            <i class="fa-regular fa-clock"></i>
+          </div>
+          </div>
+            <div class="mb-3 text-center">
+            <button type="submit" class="btn btn-danger">Submit</button>
+          </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button #closer  type="button"  class="btn btn-dark" data-bs-dismiss="modal" (click)="mclosed()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div *ngIf="full_data && hidden==false && h2" class="card mt-3 mb-3">
+    <mat-icon (click)="hide()" class="icon">keyboard_backspace</mat-icon>
+    <h1 class="mx-auto">{{name}}</h1>
+    <mat-tab-group mat-align-tabs="center" backgroundColor="primary" style="min-height: 400px;">
+      <mat-tab label="Buisness Details">
+        <div class="container p-1 mb-2">
+            <div class="row mt-4">
+
+                <div *ngIf = "full_data['location'] && full_data['location']['display_address'] && display_address" class="col-md-6">
+                    <h2 style="text-align: center;">
+                        Address
+                    </h2>
+                    <p style="text-align: center;">
+                        {{display_address}}
+                    </p>
+                </div>
+                
+                <div *ngIf ="categories && full_data['categories']" class="col-md-6">
+                    <h2 style="text-align: center;">
+                        Category
+                    </h2>
+                    <p style="text-align: center;">
+                        {{categories}}
+                    </p>
+                </div>
+   
+            </div>
+   
+            <div class="row">
+                <div *ngIf="full_data['display_phone'] && phone" class="col-md-6">
+                    <h2 style="text-align: center;">
+                        Phone
+                    </h2>
+                    <p style="text-align: center;">
+                        {{phone}}
+                    </p>
+                </div>
+                <div *ngIf ="full_data['price'] && price" class="col-md-6">
+                    <h2 style="text-align: center;">
+                        Price
+                    </h2>
+                    <p style="text-align: center;">
+                        {{price}}
+                    </p>
+                </div>
+            </div>
+   
+            <div class="row">
+                <div *ngIf=" full_data['hours'] && full_data['hours'][0]" class="col-md-6">             
+                  <h2 style="text-align: center;padding-top: 1%;">Status</h2>
+                        <p *ngIf=" full_data['hours'][0]['is_open_now']==false " style="text-align: center;color:red">
+                          Closed
+                        </p>
+                         <p *ngIf=" full_data['hours'][0]['is_open_now']==true " style="text-align: center;color:green">
+                          Open Now
+                        </p>
+                </div>
+                <div *ngIf = "yelp_info && full_data['url']"   class="col-md-6">
+                    <h2 style="text-align: center;">Visit yelp for more</h2>
+                    <p style="text-align: center;">
+                        <a href={{yelp_info}} target="_blank">Buisness link</a>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" *ngIf="!checkls(full_data['id'])">
+                        Reserve Now
+                    </button>
+                    <button type="button" class="btn btn-primary" data-bs-target="#exampleModal" *ngIf="checkls(full_data['id'])" (click)="delete(full_data['id'])">
+                      Cancel Reservation
+                  </button>
+                 </div>
+            </div>
+
+            <div class="row media mt-2">
+                <div class="col-md-12 text-center">
+                    <span>Share on : </span>
+                    <a target="_blank" href="https://twitter.com/intent/tweet?text=Check out {{ name }}&url={{ yelp_info }}">
+                      <i class="fa-brands fa-twitter twit"></i>
+                    </a>
+
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?text=Check out {{ name }}&u={{ yelp_info }}">
+                        <i class="fa-brands fa-square-facebook fbme"></i>
+                     </a>
+                </div>
+            </div>
+
+            <div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
+                <div class="carousel-inner cara mx-auto">
+                    <div class="carousel-item active mt-1">
+                        <img src="{{images[0]}}" class="d-block w-100" >
+                </div>
+                <div *ngFor="let x of images | slice:1"class="carousel-item ">
+                    <img src="{{x}}" class="d-block w-100">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+    </mat-tab>
+
+    <mat-tab label="Map Location">
+        <div class="my-google-map pt-3 pb-3 ">
+          <google-map [width]="null" [center]="gmaps" [zoom]=12>
+             <map-marker [position]="gmaps"></map-marker>
+          </google-map>
+       </div>
+       </mat-tab>
+
+
+
+    <mat-tab label="Reviews">
+        <table *ngIf="reviews.length>0" class="table table-light table-striped mb-0">
+          <tbody>
+          <tr *ngFor="let x of reviews">
+            <td> <b>{{x["user"]["name"]}}</b>
+                 <h4>Rating: {{x["rating"]}}/5</h4>
+                 <h4>{{x["text"]}}</h4>
+                 <h4>{{splitter(x["time_created"])}}</h4>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </mat-tab>

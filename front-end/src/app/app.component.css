@@ -1,0 +1,33 @@
+.parallax{
+    /* background-image: linear-gradient(white,blue), url("../assets/city.jpg") ; */
+    background-image: url('../assets/city.jpg');
+    height: 100%; 
+    overflow-x: scroll;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+  
+  .color-overlay{
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(rgba(238, 236, 236,0.5),rgba(96, 96, 211, 0.5));
+    overflow-x: scroll;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+  }
+
+  .roundness{
+    border: 2px solid black;
+    border-radius: 17px;
+    padding: 10px;
+  }
+
+  nav1{
+    display: flex;
+  }

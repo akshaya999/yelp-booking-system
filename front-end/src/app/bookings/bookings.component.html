@@ -1,0 +1,35 @@
+
+<div *ngIf = "l>0" class="testy">
+  <h1 class="text-center">List of your reservations</h1>
+  <div class="table-responsive rounded">
+  <table  class="table table-responsive mb-0 btable">
+  <thead>
+    <tr>
+    <th >#</th>
+    <th >Buisness Name</th>
+    <th >Date</th>
+    <th >Time</th>
+    <th >Email</th>
+    <th ></th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of ls | keyvalue; index as i">
+      <td > <b>{{ i+1 }}</b> </td>
+      <td >{{ item.value['resbname'] }}</td>
+      <td >{{ item.value['resdate'] }}</td>
+      <td >{{ item.value['reshour']}}:{{item.value['resmin']}}</td>
+      <td >{{ item.value['resemail'] }}</td>
+      <td (click)="delete(item.key)" style="cursor: pointer;"><i class="fa-regular fa-trash-can"></i></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+
+
+
+<div *ngIf="l==0" class="col-12">
+<p class="nrf text-center rounded rounded-3 overflow-hidden">No reservations to show</p>
+</div>

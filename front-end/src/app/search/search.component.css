@@ -1,0 +1,133 @@
+.cardcontainer{
+    background-color: white;
+    padding: 3%;
+    border: 1px solid lightgrey;
+    border-radius: 30px;
+    max-width: 760px;
+    margin: 0 auto 0 auto;
+}
+
+
+
+@media only screen and (max-width:600px) {
+    .cardcontainer{
+        background-color: white;
+        padding: 3%;
+        border: 1px solid lightgrey;
+        border-radius: 30px;
+        width: 90%;
+        margin: 0 auto 0 auto;
+    }
+}
+
+
+
+
+
+.tablecontainer{
+    max-width: 80%;
+    margin: 0 auto 0 auto;
+    border: 1px solid lightgrey;
+    border-radius: 30px;
+}
+
+
+.buttons{
+    margin-top: 5%;
+}
+
+.icon{
+    font-size: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.headingbs{
+    font-weight: 500;
+    font-size: 20px;
+}
+
+
+.card{
+    background-color: white;
+    width: 60%;
+    margin: 0 auto 0 auto ;
+}
+
+
+
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
+}
+
+  .cara{
+      max-width: 35%;
+  }
+
+@media only screen and (max-width:600px) {
+    .card{
+        background-color: white;
+        width: 90%;
+        margin: 0 auto 0 auto ;
+    }
+    
+}
+
+
+.twit{
+    color: rgb(29, 161, 242);
+    font-size: 30px;
+    margin-left: 10px;
+}
+
+.fbme{
+    color: rgb(66, 103, 178);
+    font-size: 30px;
+    margin-left: 10px;
+}
+
+
+.carousel-inner > .carousel-item > img {
+    height:320px;
+}
+
+
+
+@media only screen and (max-width:600px) {
+    .carousel-inner > .carousel-item > img {
+        height:320px;
+        width: 100%;
+    }
+
+    .cara {
+        max-width: 85%;
+    }
+
+    
+  
+}
+
+.mtrf{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+.nrf{
+    color: red;
+    font-size: 20px;
+    background-color: aliceblue;
+    width: 30%;
+    margin: 0 auto 0 auto;
+}
+
+@media only screen and (max-width:600px) {
+    .nrf{
+        color: red;
+        font-size: 20px;
+        background-color: aliceblue;
+        width: 80%;
+        margin: 0 auto 0 auto;
+    }
+}

@@ -1,0 +1,39 @@
+.ifresults{
+    width: 70%;
+}
+
+.testy{
+    margin: 0 auto 0 auto;
+    width:78%
+}
+
+table tr:last-child td{
+    border-bottom:0 ;
+}
+
+tr:hover td {background:lightgrey}
+
+.btable{
+    background-color: aliceblue;
+}
+
+
+.nrf{
+    color: red;
+    font-size: 20px;
+    background-color: aliceblue;
+    width: 30%;
+    margin: 0 auto 0 auto;
+}
+
+
+@media only screen and (max-width:600px) {
+    .nrf{
+        color: red;
+        font-size: 20px;
+        background-color: aliceblue;
+        width: 80%;
+        margin: 10% auto 0 auto;
+    }
+    
+}
